@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>电费计算器</title>
+    <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <style>
+        th, td, input, label {
+            text-align: center;
+        }
+
+        input, label {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id='wrapper'>
+        <table class="table table-striped table-bordered table-condensed " style="table-layout:fixed;">
+            <caption border="1">电费计算器</caption>
+            <tr>
+                <th>房间</th>
+                <th>上月</th>
+                <th>本月</th>
+                <th>使用</th>
+                <th>分摊</th>
+                <th>度均</th>
+            </tr>
+            <tr>
+                <td>1号</td>
+                <td><input id="input1" type="number" step="0.01" /></td>
+                <td><input id="input2" type="number" step="0.01" /></td>
+                <td><label id="lbl1" /></td>
+                <td><label id="lbl2" /></td>
+                <td><label id="lbl3" /></td>
+            </tr>
+            <tr>
+                <td>2号</td>
+                <td><input id="input3" type="number" step="0.01" /></td>
+                <td><input id="input4" type="number" step="0.01" /></td>
+                <td><label id="lbl4" /></td>
+                <td><label id="lbl5" /></td>
+            </tr>
+            <tr>
+                <td>3号</td>
+                <td><input id="input5" type="number" step="0.01" /></td>
+                <td><input id="input6" type="number" step="0.01" /></td>
+                <td><label id="lbl6" /></td>
+                <td><label id="lbl7" /></td>
+            </tr>
+            <tr>
+                <td>4号</td>
+                <td><input id="input7" type="number" step="0.01" /></td>
+                <td><input id="input8" type="number" step="0.01" /></td>
+                <td><label id="lbl8" /></td>
+                <td><label id="lbl9" /></td>
+            </tr>
+            <tr>
+                <td>总计</td>
+                <td><label id="lbl10" /></td>
+                <td><label id="lbl11" /></td>
+                <td><label id="lbl12" /></td>
+                <td><input id="input9" type="number" step="0.01" /></td>
+                <td><button style="width:100%" onclick="calculate()">计算</button></td>
+            </tr>
+        </table>
+    </div>
+    <script>
+        // 计算费用
+        function calculate() {
+            // 若输入合法，则计算费用
+            if (check()) {
+                var room1le = parseFloat(document.getElementById("input1").value);
+                var room1ne = parseFloat(document.getElementById("input2").value);
+                var room2le = parseFloat(document.getElementById("input3").value);
+                var room2ne = parseFloat(document.getElementById("input4").value);
+                var room3le = parseFloat(document.getElementById("input5").value);
+                var room3ne = parseFloat(document.getElementById("input6").value);
+                var room4le = parseFloat(document.getElementById("input7").value);
+                var room4ne = parseFloat(document.getElementById("input8").value);
+                var totalprice = parseFloat(document.getElementById("input9").value);
+
+                var room1use = room1ne - room1le;
+                var room2use = room2ne - room2le;
+                var room3use = room3ne - room3le;
+                var room4use = room4ne - room4le;
+
+                var totalle = room1le + room2le + room3le + room4le;
+                var totalne = room1ne + room2ne + room3ne + room4ne;
+                var totaluse = totalne - totalle;
+
+                var averageprice = totalprice / totaluse;
+                var room1cost = averageprice * room1use;
+                var room2cost = averageprice * room2use;
+                var room3cost = averageprice * room3use;
+                var room4cost = averageprice * room4use;
+
+                document.getElementById("lbl1").innerText = room1use.toFixed(2);
+                document.getElementById("lbl2").innerText = room1cost.toFixed(2);
+
+                document.getElementById("lbl4").innerText = room2use.toFixed(2);
+                document.getElementById("lbl5").innerText = room2cost.toFixed(2);
+
+                document.getElementById("lbl6").innerText = room3use.toFixed(2);
+                document.getElementById("lbl7").innerText = room3cost.toFixed(2);
+
+                document.getElementById("lbl8").innerText = room4use.toFixed(2);
+                document.getElementById("lbl9").innerText = room4cost.toFixed(2);
+
+                document.getElementById("lbl10").innerText = totalle.toFixed(2);
+                document.getElementById("lbl11").innerText = totalne.toFixed(2);
+                document.getElementById("lbl12").innerText = totaluse.toFixed(2);
+
+                document.getElementById("lbl3").innerText = averageprice.toFixed(3);
+            }
+        }
+
+        // 检查当前输入是否合法
+        function check() {
+            for (var i = 1; i < 10; i++) {
+                var input = document.getElementById("input" + i);
+                if (input.value == "") {
+                    alert("输入数据不完整，请检查输入!");
+                    input.focus();
+                    return false;
+                }
+            }
+            return true;
+        }
+
+    </script>
+</body>
+</html>
